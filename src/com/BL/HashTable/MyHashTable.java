@@ -9,17 +9,14 @@ public class MyHashTable<K,V> {
     ArrayList<MyMapNode<K, V>> myBucketArray;
 
     public MyHashTable() {
-        this.numOfBuckets = 10;
+        this.numOfBuckets = 20;
         this.myBucketArray = new ArrayList<>(numOfBuckets);
         // Create empty LinkedLists
         for (int i = 0; i < numOfBuckets; i++)
             this.myBucketArray.add(null);
     }
-
     // Method to get value from LinkedList using index number
     // key : key is returned
-
-
     public V get(K key) {
         int index = this.getBucketIndex(key);
         if (this.myBucketArray.get(index) == null)
@@ -27,11 +24,8 @@ public class MyHashTable<K,V> {
         MyMapNode<K, V> myNode = search(key);
         return (myNode == null) ? null : myNode.getValue();
     }
-
     // Method to search the word in LinkedList
     // key : key to search
-
-
     public MyMapNode<K, V> search(K key) {
         MyMapNode<K, V> currentNode = head;
         while (currentNode != null) {
@@ -40,7 +34,6 @@ public class MyHashTable<K,V> {
             }
             currentNode = currentNode.getNext();
         }
-
         return currentNode;
     }
 
@@ -63,12 +56,11 @@ public class MyHashTable<K,V> {
             myNode.setValue(value);
     }
     /*
-     * This implements hash function to find index for a key
+      Here implements hash function to find index for a key
      */
     public int getBucketIndex(K key) {
         int hashCode = Math.abs(key.hashCode());
         int index = hashCode % numOfBuckets;
-        ////System.out.println("Key: "+word+" hashcode: "+hashCode+" index: "+index);
         return index;
 
     }
@@ -84,6 +76,24 @@ public class MyHashTable<K,V> {
             this.tail = myNode;
         }
     }
+    // Method to remove a word
+    // key : word to be removed
+    public void remove(K key) {
+        MyMapNode<K, V> currentNode = head;
+        MyMapNode<K, V> previousNode = null;
+        while (currentNode != null && currentNode.getKey().equals(key)) {
+            head = currentNode.getNext();
+        }
+        while (currentNode != null && !(currentNode.getKey().equals(key))) {
+            previousNode = currentNode;
+            currentNode = currentNode.getNext();
+        }
+        if (currentNode != null)
+            previousNode.next = currentNode.next;
+        if (currentNode == null)
+            System.out.println("Word not found");
+    }
+
     @Override
     public String toString() {
         return "MyHashMapNodes{" + head + '}';
